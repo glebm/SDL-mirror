@@ -2224,6 +2224,21 @@ AC_MSG_WARN("directfb $directfb_lib")
     fi
 }
 
+CheckFBDEV()
+{
+	if test x$ARCH = xlinux -a x$enable_video = xyes; then
+		AC_ARG_ENABLE(video-fbdev,
+					  AC_HELP_STRING([--enable-video-fbdev],
+									 [Enable the framebuffer video backend [[default=yes]]]
+									 ),, enable_video_fbdev=yes)
+		if test x$enable_video_fbdev = xyes; then
+			have_video=yes
+			SUMMARY_video="${SUMMARY_video} fbdev"
+			AC_DEFINE(SDL_VIDEO_DRIVER_FBDEV, 1, [ ])
+		fi
+	fi
+}
+
 dnl Find KMSDRM
 CheckKMSDRM()
 {
@@ -3502,6 +3517,7 @@ case "$host" in
         CheckRPI
         CheckX11
         CheckDirectFB
+        CheckFBDEV
         CheckKMSDRM
         CheckOpenGLX11
         CheckOpenGLESX11
@@ -3646,7 +3662,12 @@ case "$host" in
         # Set up files for evdev input
         if test x$use_input_events = xyes; then
             SOURCES="$SOURCES $srcdir/src/core/linux/SDL_evdev*.c"
-        fi       
+        fi
+        # Set up files for the fbdev video driver
+        if test x$enable_video_fbdev = xyes; then
+            SOURCES="$SOURCES $srcdir/src/video/fbdev/*.c"
+            $as_echo "#define SDL_VIDEO_DRIVER_FB 1" >>confdefs.h
+        fi
         # Set up other core UNIX files
         SOURCES="$SOURCES $srcdir/src/core/linux/SDL_threadprio.c"
         SOURCES="$SOURCES $srcdir/src/core/unix/*.c"
