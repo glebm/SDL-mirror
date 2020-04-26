@@ -141,13 +141,17 @@ FB_VideoInit(_THIS)
     display.desktop_mode = current_mode;
     display.current_mode = current_mode;
 
-    SDL_AddVideoDisplay(&display);
+    if (SDL_AddVideoDisplay(&display) < 0) {
+        return -1;
+    }
 
 #ifdef SDL_INPUT_LINUXEV
-    SDL_EVDEV_Init();
+    if (SDL_EVDEV_Init() < 0) {
+        return -1;
+    }
 #endif
 
-    return 1;
+    return 0;
 }
 
 void
