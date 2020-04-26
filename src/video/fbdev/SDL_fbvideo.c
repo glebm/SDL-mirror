@@ -83,8 +83,8 @@ FB_Create()
     device->VideoQuit = FB_VideoQuit;
     device->GetDisplayModes = FB_GetDisplayModes;
     device->SetDisplayMode = FB_SetDisplayMode;
-    device->CreateWindow = FB_CreateWindow;
-    device->CreateWindowFrom = FB_CreateWindowFrom;
+    device->CreateSDLWindow = FB_CreateWindow;
+    device->CreateSDLWindowFrom = FB_CreateWindowFrom;
     device->SetWindowTitle = FB_SetWindowTitle;
     device->SetWindowIcon = FB_SetWindowIcon;
     device->SetWindowPosition = FB_SetWindowPosition;
